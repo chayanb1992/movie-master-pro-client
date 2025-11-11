@@ -112,7 +112,7 @@ const Navbar2 = () => {
               </button>
 
               {openProfile && (
-                <div className="absolute -left-6 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 origin-top-left group-hover:block transition-all duration-300 transform scale-95 md:block">
+                <div className="absolute z-20 -left-6 mt-2 w-48 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 origin-top-left group-hover:block transition-all duration-300 transform scale-95 md:block">
                   <div className="py-1">
                     <img
                       src={user?.photoURL || "https://via.placeholder.com/100"}
