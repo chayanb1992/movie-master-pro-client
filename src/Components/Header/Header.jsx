@@ -5,6 +5,7 @@ const Header = () => {
   return (
     <div>
       <Navbar></Navbar>
+      {/* <Navbar2></Navbar2> */}
     </div>
   );
 };
