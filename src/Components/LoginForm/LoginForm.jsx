@@ -43,11 +43,11 @@ const LoginForm = () => {
   console.log(user);
 
   // Redirect if user is already logged in
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/");
-  //   }
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">

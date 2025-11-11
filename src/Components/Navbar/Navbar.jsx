@@ -129,19 +129,22 @@ const Navbar2 = () => {
                     >
                       My Profile
                     </Link>
-                    <a
-                      href="#"
+                    <Link
+                      onClick={() => setOpenProfile(!openProfile)}
+                      to={"/mycollection"}
                       className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:secondary transition duration-300 border-l-4 border-transparent hover:border-secondary"
                     >
                       My Collection
-                    </a>
+                    </Link>
                     <a
+                      onClick={() => setOpenProfile(!openProfile)}
                       href="#"
                       className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-secondary transition duration-300 border-l-4 border-transparent hover:border-secondary"
                     >
                       Playlists
                     </a>
                     <a
+                      onClick={() => setOpenProfile(!openProfile)}
                       href="#"
                       className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-secondary transition duration-300 border-l-4 border-transparent hover:border-secondary"
                     >
@@ -205,7 +208,7 @@ const Navbar2 = () => {
 
             <li>
               <NavLink
-                to="/collection"
+                to="/mycollection"
                 className={({ isActive }) =>
                   isActive
                     ? "text-secondary"
