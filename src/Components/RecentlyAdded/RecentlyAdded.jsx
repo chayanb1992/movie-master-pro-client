@@ -5,14 +5,14 @@ const RecentlyAdded = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/allmovies")
+    fetch("http://localhost:3000/recently-added")
       .then((res) => res.json())
       .then((data) => {
         // Sort by newest first and pick 6
-        const latestMovies = data
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .slice(0, 6);
-        setMovies(latestMovies);
+        // const latestMovies = data
+        //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        //   .slice(0, 6);
+        setMovies(data);
       })
       .catch((err) => console.error("Error fetching movies:", err));
   }, []);
