@@ -6,16 +6,26 @@ import TopRatedMovies from "../TopRatedMovies/TopRatedMovies";
 import RecentlyAdded from "../RecentlyAdded/RecentlyAdded";
 import Genres from "../Genres/Genres";
 import AboutPlatform from "../AboutPlatform/AboutPlatform";
+import SectionWrapper from "../../Animation/FrameAnimation";
 
 const HomeLayout = () => {
   return (
     <div className="">
       <Hero></Hero>
       <Statistics></Statistics>
-      <TopRatedMovies></TopRatedMovies>
-      <RecentlyAdded></RecentlyAdded>
-      <Genres></Genres>
-      <AboutPlatform></AboutPlatform>
+      <SectionWrapper>
+        <TopRatedMovies></TopRatedMovies>
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <RecentlyAdded></RecentlyAdded>
+      </SectionWrapper>
+      <SectionWrapper>
+        <Genres></Genres>
+      </SectionWrapper>
+      <SectionWrapper>
+        <AboutPlatform></AboutPlatform>
+      </SectionWrapper>
     </div>
   );
 };

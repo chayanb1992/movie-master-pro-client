@@ -6,6 +6,7 @@ import MyProfile from "../Components/MyProfile/MyProfile";
 import PrivateRoute from "./PrivateRoute";
 import MyCollection from "../Components/MyCollection/MyCollection";
 import Register from "../Components/Register/Register";
+import AllMovies from "../Pages/AllMovies";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
             <MyProfile></MyProfile>
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/movies",
+        loader: () => fetch("http://localhost:3000/allmovies"),
+        element: <AllMovies></AllMovies>,
       },
       {
         path: "/mycollection",
