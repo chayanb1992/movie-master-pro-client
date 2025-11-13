@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { Star, Play } from "lucide-react";
 
 const AllMovies = () => {
@@ -59,9 +59,11 @@ const AllMovies = () => {
                 <p className="text-gray-300 text-sm mb-4">
                   {movie.genre || "Action"} | {movie.releaseYear || "2024"}
                 </p>
-                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2 w-full justify-center transition">
-                  <Play className="w-4 h-4 fill-white" /> Details
-                </button>
+                <Link to={`/movies/${movie._id}`}>
+                  <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-2 w-full justify-center transition">
+                    <Play className="w-4 h-4 fill-white" /> Details
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

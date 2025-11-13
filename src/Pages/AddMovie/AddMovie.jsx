@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getAuth } from "firebase/auth";
 
 const AddMovie = () => {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
   const [formData, setFormData] = useState({
     title: "",
     genre: "",
     releaseYear: "",
+    director: "",
+    cast: "",
     rating: "",
+    duration: "",
+    plotSummary: "",
     posterUrl: "",
-    section: "",
+    language: "",
+    country: "",
+    addedBy: currentUser?.email || "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -21,12 +31,17 @@ const AddMovie = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const payload = {
+      ...formData,
+      releaseYear: parseFloat(formData.releaseYear),
+      rating: parseFloat(formData.rating),
+      duration: parseFloat(formData.duration),
+    };
     try {
-      const res = await fetch("http://localhost:3000/add-movie", {
+      const res = await fetch("http://localhost:3000/movies/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (res.ok) {
@@ -35,9 +50,15 @@ const AddMovie = () => {
           title: "",
           genre: "",
           releaseYear: "",
+          director: "",
+          cast: "",
           rating: "",
+          duration: "",
+          plotSummary: "",
           posterUrl: "",
-          section: "",
+          language: "",
+          country: "",
+          addedBy: currentUser?.email || "",
         });
       } else {
         toast.error(data.message || "Failed to add movie.");
@@ -53,103 +74,99 @@ const AddMovie = () => {
   return (
     <section className="bg-gray-900 text-white py-16 px-6 md:px-16 min-h-screen">
       <ToastContainer />
-      <div className="max-w-3xl mx-auto bg-gray-800 p-10 rounded-3xl shadow-2xl">
+      <div className="max-w-4xl mx-auto bg-gray-800 p-10 rounded-3xl shadow-2xl">
         <h2 className="text-4xl font-bold mb-6 text-center">Add New Movie</h2>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Title */}
-          <div>
-            <label className="block mb-2 font-semibold">Movie Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
-            />
-          </div>
-
-          {/* Genre */}
-          <div>
-            <label className="block mb-2 font-semibold">Genre</label>
-            <input
-              type="text"
-              name="genre"
-              value={formData.genre}
-              onChange={handleChange}
-              placeholder="Action, Drama, Comedy..."
-              required
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
-            />
-          </div>
-
-          {/* Release Year */}
-          <div>
-            <label className="block mb-2 font-semibold">Release Year</label>
-            <input
-              type="number"
-              name="releaseYear"
-              value={formData.releaseYear}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
-            />
-          </div>
-
-          {/* Rating */}
-          <div>
-            <label className="block mb-2 font-semibold">Rating</label>
-            <input
-              type="number"
-              name="rating"
-              value={formData.rating}
-              onChange={handleChange}
-              placeholder="0 to 10"
-              min="0"
-              max="10"
-              step="0.1"
-              required
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
-            />
-          </div>
-
-          {/* Poster URL */}
-          <div>
-            <label className="block mb-2 font-semibold">Poster URL</label>
-            <input
-              type="url"
-              name="posterUrl"
-              value={formData.posterUrl}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
-            />
-            {formData.posterUrl && (
-              <img
-                src={formData.posterUrl}
-                alt="Poster Preview"
-                className="mt-3 w-40 h-56 object-cover rounded-lg border border-gray-600"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Column */}
+            <div className="space-y-4">
+              <InputField
+                label="Title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
               />
-            )}
-          </div>
+              <InputField
+                label="Genre"
+                name="genre"
+                value={formData.genre}
+                onChange={handleChange}
+                placeholder="Action, Drama, Comedy..."
+              />
+              <InputField
+                label="Release Year"
+                name="releaseYear"
+                type="number"
+                value={formData.releaseYear}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Director"
+                name="director"
+                value={formData.director}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Cast"
+                name="cast"
+                value={formData.cast}
+                onChange={handleChange}
+                placeholder="Actor1, Actor2, Actor3"
+              />
+              <InputField
+                label="Rating"
+                name="rating"
+                type="number"
+                min="0"
+                max="10"
+                step="0.1"
+                value={formData.rating}
+                onChange={handleChange}
+              />
+            </div>
 
-          {/* Section */}
-          <div>
-            <label className="block mb-2 font-semibold">Section</label>
-            <select
-              name="section"
-              value={formData.section}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
-            >
-              <option value="">Select Section</option>
-              <option value="hero">Hero</option>
-              <option value="top-rated">Top Rated</option>
-              <option value="recently-added">Recently Added</option>
-              <option value="trending">Trending</option>
-            </select>
+            {/* Right Column */}
+            <div className="space-y-4">
+              <InputField
+                label="Duration"
+                name="duration"
+                value={formData.duration}
+                onChange={handleChange}
+                placeholder="148"
+              />
+              <InputField
+                label="Language"
+                name="language"
+                value={formData.language}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Country"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Poster URL"
+                name="posterUrl"
+                value={formData.posterUrl}
+                onChange={handleChange}
+              />
+              <TextareaField
+                label="Plot Summary"
+                name="plotSummary"
+                value={formData.plotSummary}
+                onChange={handleChange}
+                rows={5}
+              />
+              <InputField
+                label="Added By"
+                name="addedBy"
+                value={formData.addedBy}
+                disabled
+              />
+            </div>
           </div>
 
           {/* Submit Button */}
@@ -165,5 +182,47 @@ const AddMovie = () => {
     </section>
   );
 };
+
+// Reusable Input Field
+const InputField = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder = "",
+  disabled = false,
+  ...rest
+}) => (
+  <div>
+    <label className="block mb-2 font-semibold">{label}</label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      disabled={disabled}
+      required={!disabled}
+      className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600"
+      {...rest}
+    />
+  </div>
+);
+
+// Reusable Textarea Field
+const TextareaField = ({ label, name, value, onChange, rows = 3 }) => (
+  <div>
+    <label className="block mb-2 font-semibold">{label}</label>
+    <textarea
+      name={name}
+      value={value}
+      onChange={onChange}
+      rows={rows}
+      required
+      className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600 resize-none"
+    ></textarea>
+  </div>
+);
 
 export default AddMovie;
