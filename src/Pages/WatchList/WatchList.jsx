@@ -11,6 +11,7 @@ const Watchlist = () => {
   const [fetching, setFetching] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (authLoading) return;
@@ -83,14 +84,27 @@ const Watchlist = () => {
     }
   };
 
-  if (fetching) {
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // ✅ Beautiful Realistic Loading Spinner
+  if (isLoading || "") {
     return (
-      <div className="flex justify-center items-center h-screen text-white bg-gray-950">
-        <Loader2 className="w-8 h-8 animate-spin" /> Loading watchlist...
-      </div>
+      <section className="bg-black text-white flex flex-col justify-center items-center h-screen">
+        <div className="relative w-24 h-24">
+          {/* Outer glow ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-gray-800 animate-pulse"></div>
+          {/* Spinning gradient ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-t-red-600 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+        </div>
+        <p className="mt-8 text-gray-300 text-xl font-medium tracking-wide animate-pulse">
+          Loading cinematic universe...
+        </p>
+      </section>
     );
   }
-
   if (!watchlist.length) {
     return (
       <div className="flex justify-center items-center h-screen text-gray-400 bg-gray-950">

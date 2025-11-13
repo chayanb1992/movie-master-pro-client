@@ -12,6 +12,7 @@ const MyCollection = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!user) return;
@@ -62,6 +63,28 @@ const MyCollection = () => {
   //   const handleEdit = (id) => {
   //     window.location.href = `/edit-movie/${id}`;
   //   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // ✅ Beautiful Realistic Loading Spinner
+  if (isLoading || "") {
+    return (
+      <section className="bg-black text-white flex flex-col justify-center items-center h-screen">
+        <div className="relative w-24 h-24">
+          {/* Outer glow ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-gray-800 animate-pulse"></div>
+          {/* Spinning gradient ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-t-red-600 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+        </div>
+        <p className="mt-8 text-gray-300 text-xl font-medium tracking-wide animate-pulse">
+          Loading cinematic universe...
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-gray-950 text-white min-h-screen py-16 px-6 md:px-16">
