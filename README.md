@@ -1,16 +1,49 @@
-# React + Vite
+# 🎬 Movie Master Pro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Movie Master Pro** is a modern movie discovery web application where users can explore, rate, and manage their favorite films.  
+Built with **React**, **Node.js**, **Express**, and **MongoDB**, it delivers a fast, elegant, and responsive experience.
 
-Currently, two official plugins are available:
+🌐 **Live Site:**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🎥 **Dynamic Movie Database:** Browse all movies with real-time updates from MongoDB.
+- ⭐ **Top-Rated & Recently Added:** View top-rated and newly released movies instantly.
+- 🔍 **Genre-Based Filtering:** Explore movies by genre with a beautiful, cinematic design.
+- 🔐 **Secure Authentication:** Login and register using Firebase (email/password or Google).
+- ❤️ **Personal Watchlist:** Add and manage your favorite movies easily from your profile.
+- 📱 **Fully Responsive:** Optimized for mobile, tablet, and desktop devices.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+**Frontend:**
+
+- React (Vite)
+- Tailwind CSS
+- Lucide React Icons
+- React Router DOM
+- React Toastify
+
+**Backend:**
+
+- Node.js
+- Express.js
+- MongoDB (Atlas)
+
+**Authentication:**
+
+- Firebase Authentication (Email/Password + Google)
+
+---
+
+## ⚙️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/movie-master-pro.git
+   cd movie-master-pro
+   ```
