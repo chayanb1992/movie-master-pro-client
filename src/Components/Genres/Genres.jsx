@@ -2,39 +2,32 @@ import React, { useEffect, useState } from "react";
 import { Film } from "lucide-react";
 
 const Genres = () => {
-  const [movies, setMovies] = useState([]);
   const [genreData, setGenreData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/allmovies")
+    fetch("http://localhost:3000/genres")
       .then((res) => res.json())
       .then((data) => {
-        setMovies(data);
-
-        // Extract unique genres
-        const genreMap = {};
-        data.forEach((movie) => {
-          movie.genre.split(",").forEach((g) => {
-            const genre = g.trim();
-            if (!genreMap[genre]) {
-              genreMap[genre] = { count: 1, posterUrl: movie.posterUrl };
-            } else {
-              genreMap[genre].count += 1;
-            }
-          });
-        });
-
-        // Convert object to array
-        const genreArray = Object.keys(genreMap).map((key) => ({
-          name: key,
-          count: genreMap[key].count,
-          posterUrl: genreMap[key].posterUrl,
-        }));
-
-        setGenreData(genreArray);
+        setGenreData(data);
+        setLoading(false);
       })
-      .catch((err) => console.error("Error fetching movies:", err));
+      .catch((err) => {
+        console.error("Error fetching genres:", err);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return (
+      <section className="bg-black text-white py-24 flex justify-center items-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-t-transparent border-red-600 rounded-full animate-spin"></div>
+          <p className="text-gray-400">Loading genres...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-black text-white py-24 px-6 md:px-16">
@@ -56,9 +49,9 @@ const Genres = () => {
             key={i}
             className="relative group rounded-xl overflow-hidden shadow-lg transition-transform duration-500 hover:scale-[1.05] cursor-pointer"
           >
-            {/* Card Background from movie poster */}
+            {/* Card Background */}
             <img
-              src={genre.posterUrl}
+              src={genre.posterUrl || "https://via.placeholder.com/300x200"}
               alt={genre.name}
               className="h-40 w-full object-cover"
             />

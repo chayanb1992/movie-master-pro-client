@@ -20,6 +20,7 @@ const AddMovie = () => {
     language: "",
     country: "",
     addedBy: currentUser?.email || "",
+    createdAt: new Date(),
   });
 
   const [loading, setLoading] = useState(false);
@@ -59,6 +60,7 @@ const AddMovie = () => {
           language: "",
           country: "",
           addedBy: currentUser?.email || "",
+          createdAt: new Date(),
         });
       } else {
         toast.error(data.message || "Failed to add movie.");
