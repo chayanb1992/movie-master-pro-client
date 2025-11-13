@@ -10,6 +10,7 @@ import AddMovie from "../Pages/AddMovie/AddMovie";
 import MyCollection from "../Pages/AddMovie/MyCollection/MyCollection";
 import MovieDetails from "../Pages/MovieDetails/MovieDetails";
 import Update from "../Pages/Update/Update";
+import Watchlist from "../Pages/WatchList/WatchList";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
             <MyCollection></MyCollection>
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/watchlist",
+        element: <Watchlist></Watchlist>,
       },
     ],
   },

@@ -143,13 +143,13 @@ const Navbar2 = () => {
                     >
                       Add Movie
                     </Link>
-                    <a
+                    <Link
                       onClick={() => setOpenProfile(!openProfile)}
-                      href="#"
+                      to={"/watchList"}
                       className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 hover:text-secondary transition duration-300 border-l-4 border-transparent hover:border-secondary"
                     >
-                      Watch later
-                    </a>
+                      My Watchlist
+                    </Link>
                   </div>
                 </div>
               )}

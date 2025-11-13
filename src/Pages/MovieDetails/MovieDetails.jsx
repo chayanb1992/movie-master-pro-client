@@ -1,25 +1,71 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
-import { Loader2, Trash2, Pencil, Star, Clock, Film } from "lucide-react";
+import {
+  Loader2,
+  Trash2,
+  Pencil,
+  Star,
+  Clock,
+  Play,
+  BookmarkPlus,
+  BookmarkCheck,
+} from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContex } from "../../AuthContex/AuthContex";
 
 const MovieDetails = () => {
-  const movie = useLoaderData(); // ✅ Directly use loader data
+  const movie = useLoaderData();
   const navigate = useNavigate();
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const { user, loading, setLoading } = useContext(AuthContex); // ✅ also track auth loading
 
-  const [deleting, setDeleting] = React.useState(false);
-  console.log(movie);
-  if (!movie)
-    return (
-      <div className="flex justify-center items-center h-screen text-gray-400 bg-gray-950">
-        Movie not found.
-      </div>
-    );
+  const [deleting, setDeleting] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const [isWatchlisted, setIsWatchlisted] = useState(false);
+  const [checkedWatchlist, setCheckedWatchlist] = useState(false); // ✅ indicates check done
 
+  const isOwner = user?.email === movie.addedBy;
+
+  // ✅ Fetch watchlist only after user is loaded
+  console.log(user?.email);
+  useEffect(() => {
+    if (loading) return; // wait until Firebase user is ready
+
+    const fetchWatchlist = async () => {
+      if (!user) {
+        setIsWatchlisted(false);
+        setCheckedWatchlist(true);
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `http://localhost:3000/watchlist?email=${user?.email}`
+        );
+        const data = await res.json();
+        console.log(data);
+        console.log("Fetched watchlist:", data);
+
+        if (res.ok && Array.isArray(data.watchList)) {
+          const match = data.watchList.some(
+            (id) => String(id) === String(movie._id)
+          );
+          setIsWatchlisted(match);
+        } else {
+          setIsWatchlisted(false);
+        }
+      } catch (err) {
+        console.error("Error fetching watchlist:", err);
+        setIsWatchlisted(false);
+      } finally {
+        setCheckedWatchlist(true);
+      }
+    };
+
+    fetchWatchlist();
+  }, [user, loading, movie._id]);
+  console.log(isWatchlisted);
+  // ✅ Delete movie (owner only)
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete this movie?")) return;
 
@@ -27,9 +73,7 @@ const MovieDetails = () => {
     try {
       const res = await fetch(
         `http://localhost:3000/delete-movie/${movie._id}`,
-        {
-          method: "DELETE",
-        }
+        { method: "DELETE" }
       );
 
       if (res.ok) {
@@ -45,7 +89,46 @@ const MovieDetails = () => {
     }
   };
 
-  const isOwner = user?.email === movie.addedBy;
+  // ✅ Add to Watchlist
+  const handleAddToWatchlist = async () => {
+    if (!user) {
+      toast.error("Please login to add to your watchlist.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:3000/movies/addToWatchList", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          id: movie._id,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(data.message || "✅ Added to watchlist!");
+        setIsWatchlisted(true);
+      } else {
+        toast.error(data.message || "Failed to add to watchlist.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error adding to watchlist.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!movie)
+    return (
+      <div className="flex justify-center items-center h-screen text-gray-400 bg-gray-950">
+        Movie not found.
+      </div>
+    );
 
   return (
     <section className="bg-gray-950 text-white min-h-screen py-16 px-6 md:px-16">
@@ -90,7 +173,7 @@ const MovieDetails = () => {
           <div className="flex items-center gap-4 mb-6 text-sm text-gray-400">
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 text-yellow-400" />
-              <span>{movie.rating.toFixed(1)}</span>
+              <span>{movie.rating?.toFixed(1)}</span>
             </div>
             <div className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
@@ -130,12 +213,33 @@ const MovieDetails = () => {
             </p>
           </div>
 
-          <div className="mt-8">
+          {/* Buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <button className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition">
+              <Play className="w-4 h-4 fill-white" /> Watch Now
+            </button>
+
             <button
-              onClick={() => navigate("/all-movies")}
-              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition"
+              onClick={handleAddToWatchlist}
+              disabled={!checkedWatchlist || loading || isWatchlisted}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition ${
+                isWatchlisted
+                  ? "bg-green-600 cursor-not-allowed"
+                  : "bg-gray-700 hover:bg-gray-800"
+              } ${!checkedWatchlist ? "opacity-70 cursor-wait" : ""}`}
             >
-              <Film className="w-5 h-5" /> Back to Movies
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : isWatchlisted ? (
+                <BookmarkCheck className="w-5 h-5" />
+              ) : (
+                <BookmarkPlus className="w-5 h-5" />
+              )}
+              {!checkedWatchlist
+                ? "Checking..."
+                : isWatchlisted
+                ? "Watchlisted ✓"
+                : "Add to Watchlist"}
             </button>
           </div>
         </div>
