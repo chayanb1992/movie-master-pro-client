@@ -5,7 +5,7 @@ const TopRatedMovies = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/top-rated")
+    fetch("https://movie-master-pro-client-server.vercel.app/top-rated")
       .then((res) => res.json())
       .then((data) => {
         // Sort by rating and get top 5

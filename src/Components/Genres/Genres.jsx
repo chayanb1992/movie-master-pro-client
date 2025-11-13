@@ -6,7 +6,7 @@ const Genres = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/genres")
+    fetch("https://movie-master-pro-client-server.vercel.app/genres")
       .then((res) => res.json())
       .then((data) => {
         setGenreData(data);

@@ -19,7 +19,9 @@ const Update = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/movies/${id}`);
+        const res = await fetch(
+          `https://movie-master-pro-client-server.vercel.app/movies/${id}`
+        );
         if (!res.ok) throw new Error("Failed to fetch movie");
         const data = await res.json();
         setMovie(data); // save movie data in state
@@ -49,11 +51,14 @@ const Update = () => {
       duration: parseFloat(movie.duration),
     };
     try {
-      const res = await fetch(`http://localhost:3000/update/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        `https://movie-master-pro-client-server.vercel.app/update/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (res.ok) {
         toast.success("🎬 Movie updated successfully!");

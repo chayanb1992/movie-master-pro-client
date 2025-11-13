@@ -40,7 +40,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/movies",
-        loader: () => fetch("http://localhost:3000/allmovies"),
+        loader: () =>
+          fetch("https://movie-master-pro-client-server.vercel.app/allmovies"),
         element: <AllMovies></AllMovies>,
       },
       {
@@ -51,13 +52,17 @@ const router = createBrowserRouter([
       {
         path: "/movies/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/movies/${params.id}`),
+          fetch(
+            `https://movie-master-pro-client-server.vercel.app/movies/${params.id}`
+          ),
         element: <MovieDetails></MovieDetails>,
       },
       {
         path: "/update/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/update/${params.id}`),
+          fetch(
+            `https://movie-master-pro-client-server.vercel.app/update/${params.id}`
+          ),
         element: <Update></Update>,
       },
       {

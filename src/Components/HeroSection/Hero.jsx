@@ -12,7 +12,7 @@ const Hero = () => {
   const [movieData, setMovieData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/allmovies")
+    fetch("https://movie-master-pro-client-server.vercel.app/allmovies")
       .then((res) => res.json())
       .then((data) => setMovieData(data))
       .catch((err) => console.error("Error fetching movies:", err));

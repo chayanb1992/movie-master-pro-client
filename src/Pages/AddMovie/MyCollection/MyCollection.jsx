@@ -20,7 +20,7 @@ const MyCollection = () => {
     const fetchMovies = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/my-collection?email=${user.email}`
+          `https://movie-master-pro-client-server.vercel.app/my-collection?email=${user.email}`
         );
         const data = await res.json();
         setMovies(data);
@@ -42,9 +42,12 @@ const MyCollection = () => {
 
     setDeleting(id);
     try {
-      const res = await fetch(`http://localhost:3000/delete-movie/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://movie-master-pro-client-server.vercel.app/delete-movie/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (res.ok) {
         setMovies((prev) => prev.filter((movie) => movie._id !== id));
         toast.success("🎬 Movie deleted successfully!");

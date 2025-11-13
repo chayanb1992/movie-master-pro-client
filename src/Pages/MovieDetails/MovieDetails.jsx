@@ -40,7 +40,7 @@ const MovieDetails = () => {
 
       try {
         const res = await fetch(
-          `http://localhost:3000/watchlist?email=${user?.email}`
+          `https://movie-master-pro-client-server.vercel.app/watchlist?email=${user?.email}`
         );
         const data = await res.json();
         console.log(data);
@@ -72,7 +72,7 @@ const MovieDetails = () => {
     setDeleting(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/delete-movie/${movie._id}`,
+        `https://movie-master-pro-client-server.vercel.app/delete-movie/${movie._id}`,
         { method: "DELETE" }
       );
 
@@ -98,14 +98,17 @@ const MovieDetails = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/movies/addToWatchList", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: user.email,
-          id: movie._id,
-        }),
-      });
+      const res = await fetch(
+        "https://movie-master-pro-client-server.vercel.app/movies/addToWatchList",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email,
+            id: movie._id,
+          }),
+        }
+      );
 
       const data = await res.json();
 

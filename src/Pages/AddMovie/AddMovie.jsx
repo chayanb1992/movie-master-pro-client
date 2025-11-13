@@ -39,11 +39,14 @@ const AddMovie = () => {
       duration: parseFloat(formData.duration),
     };
     try {
-      const res = await fetch("http://localhost:3000/movies/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        "https://movie-master-pro-client-server.vercel.app/movies/add",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         toast.success("Movie added successfully!");

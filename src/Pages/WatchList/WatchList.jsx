@@ -26,7 +26,7 @@ const Watchlist = () => {
       try {
         // 1️⃣ Get watchlist IDs
         const res = await fetch(
-          `http://localhost:3000/watchlist?email=${user.email}`
+          `https://movie-master-pro-client-server.vercel.app/watchlist?email=${user.email}`
         );
         const data = await res.json();
 
@@ -37,9 +37,9 @@ const Watchlist = () => {
         ) {
           // 2️⃣ Fetch full movie data for each ID
           const moviePromises = data.watchList.map((id) =>
-            fetch(`http://localhost:3000/movies/${id}`).then((res) =>
-              res.json()
-            )
+            fetch(
+              `https://movie-master-pro-client-server.vercel.app/movies/${id}`
+            ).then((res) => res.json())
           );
           const movies = await Promise.all(moviePromises);
           setWatchlist(movies);
@@ -61,7 +61,7 @@ const Watchlist = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/movies/removeFromWatchList`,
+        `https://movie-master-pro-client-server.vercel.app/movies/removeFromWatchList`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

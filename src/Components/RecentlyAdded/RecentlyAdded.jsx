@@ -5,7 +5,7 @@ const RecentlyAdded = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/recently-added")
+    fetch("https://movie-master-pro-client-server.vercel.app/recently-added")
       .then((res) => res.json())
       .then((data) => {
         // Sort by newest first and pick 6

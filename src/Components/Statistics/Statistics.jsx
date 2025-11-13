@@ -9,8 +9,10 @@ const Statistics = () => {
     const fetchStats = async () => {
       try {
         const [moviesRes, usersRes] = await Promise.all([
-          fetch("http://localhost:3000/allmovies"),
-          fetch("http://localhost:3000/total-users"),
+          fetch("https://movie-master-pro-client-server.vercel.app/allmovies"),
+          fetch(
+            "https://movie-master-pro-client-server.vercel.app/total-users"
+          ),
         ]);
 
         const moviesData = await moviesRes.json();
