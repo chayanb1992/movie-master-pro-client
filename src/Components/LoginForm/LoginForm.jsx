@@ -1,46 +1,61 @@
-// src/components/LoginForm.jsx
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate, useLocation } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthContex } from "../../AuthContex/AuthContex";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../Firebase/Firebase.init";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, login, signWithGoogle } = useContext(AuthContex);
+  const { user, login, signWithGoogle, passwordReset } = use(AuthContex);
 
-  // Local states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [passwordShow, setPasswordShow] = useState(false);
 
   // Handle normal login
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
-    setError("");
 
-    login(email, password)
-      .then(() => {
-        // Redirect if login successful
-        const redirectPath = location.state?.from || "/";
-        navigate(redirectPath);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    try {
+      await login(email, password);
+      toast.success("Login successful!");
+      const redirectPath = location.state?.from || "/";
+      navigate(redirectPath);
+    } catch (err) {
+      toast.error(err.message || "Login failed!");
+    }
   };
 
   // Google login
-  const handleGoogleLogin = () => {
-    signWithGoogle()
-      .then(() => {
-        const redirectPath = location.state?.from || "/";
-        navigate(redirectPath);
-      })
-      .catch((err) => setError(err.message));
+  const handleGoogleLogin = async () => {
+    try {
+      await signWithGoogle();
+      toast.success("Logged in with Google!");
+      const redirectPath = location.state?.from || "/";
+      navigate(redirectPath);
+    } catch (err) {
+      toast.error(err.message || "Google login failed!");
+    }
   };
-  console.log(user);
+
+  // Forgot password
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.warning("Please enter your email first!");
+      return;
+    }
+
+    try {
+      await passwordReset(email);
+      toast.success("Password reset email sent! Check your inbox.");
+    } catch (err) {
+      toast.error(err.message || "Failed to send reset email.");
+    }
+  };
 
   // Redirect if user is already logged in
   useEffect(() => {
@@ -55,10 +70,6 @@ const LoginForm = () => {
         <h2 className="text-3xl font-bold mb-6 text-center text-white">
           Login
         </h2>
-
-        {error && (
-          <p className="text-red-500 text-sm text-center mb-3">{error}</p>
-        )}
 
         <form onSubmit={handleOnSubmit} className="space-y-4">
           {/* Email */}
@@ -87,6 +98,17 @@ const LoginForm = () => {
               className="absolute right-3 top-2 text-gray-400 hover:text-gray-200"
             >
               {passwordShow ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {/* Forgot Password */}
+          <div className="text-right">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-sm text-secondary hover:underline"
+            >
+              Forgot Password?
             </button>
           </div>
 
@@ -123,6 +145,9 @@ const LoginForm = () => {
           </a>
         </p>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };

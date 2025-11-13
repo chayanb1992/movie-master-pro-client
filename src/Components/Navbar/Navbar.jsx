@@ -12,6 +12,7 @@ import {
   Star, // Upgrade
   LogOut, // Sign out
 } from "lucide-react"; // Icon library
+import ThemeToggle from "../ThemeToggle";
 
 // ✅ Menu data
 const menuItems = [
@@ -64,6 +65,18 @@ const Navbar2 = () => {
       console.error("Logout error:", error);
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenProfile(false);
+      }
+    };
+
+    // Add and clean up listener
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, []);
 
   // ✅ Close dropdown when clicking outside
   useEffect(() => {

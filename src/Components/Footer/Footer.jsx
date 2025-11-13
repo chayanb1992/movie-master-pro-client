@@ -6,6 +6,7 @@ import {
   FaYoutube,
   FaEnvelope,
 } from "react-icons/fa";
+import { FaX, FaXTwitter } from "react-icons/fa6";
 
 const genres = [
   "Action",
@@ -96,7 +97,7 @@ const Footer = () => {
               <FaFacebookF />
             </a>
             <a href="#" className="hover:text-red-500 transition">
-              <FaTwitter />
+              <FaXTwitter />
             </a>
             <a href="#" className="hover:text-red-500 transition">
               <FaInstagram />

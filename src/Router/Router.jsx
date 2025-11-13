@@ -11,6 +11,7 @@ import MyCollection from "../Pages/AddMovie/MyCollection/MyCollection";
 import MovieDetails from "../Pages/MovieDetails/MovieDetails";
 import Update from "../Pages/Update/Update";
 import Watchlist from "../Pages/WatchList/WatchList";
+import NotFound from "../Components/NotFound/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
         element: <Watchlist></Watchlist>,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound></NotFound>,
   },
 ]);
 

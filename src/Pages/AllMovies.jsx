@@ -1,28 +1,35 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { Star, Play } from "lucide-react";
+import { AuthContex } from "../AuthContex/AuthContex";
 
 const AllMovies = () => {
+  const { loading } = use(AuthContex);
   const allMovies = useLoaderData(); // ✅ get data from loader
 
-  if (!allMovies || allMovies.length === 0) {
-    // show loading skeleton if empty or error
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // ✅ Beautiful Realistic Loading Spinner
+  if (isLoading || !allMovies || allMovies.length === 0) {
     return (
-      <section className="bg-black text-white py-16 px-6 md:px-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {Array(8)
-            .fill(0)
-            .map((_, i) => (
-              <div
-                key={i}
-                className="bg-gray-800 rounded-2xl overflow-hidden animate-pulse h-72 sm:h-80 md:h-96"
-              ></div>
-            ))}
+      <section className="bg-black text-white flex flex-col justify-center items-center h-screen">
+        <div className="relative w-24 h-24">
+          {/* Outer glow ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-gray-800 animate-pulse"></div>
+          {/* Spinning gradient ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-t-red-600 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
         </div>
+        <p className="mt-8 text-gray-300 text-xl font-medium tracking-wide animate-pulse">
+          Loading cinematic universe...
+        </p>
       </section>
     );
   }
-
   return (
     <section className="bg-black text-white py-16 px-6 md:px-16">
       <div className="max-w-7xl mx-auto">

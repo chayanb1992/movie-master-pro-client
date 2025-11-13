@@ -45,6 +45,7 @@ const ContexProvider = ({ children }) => {
     return sendPasswordResetEmail(auth, email);
   };
   // const authData = { user, createAccount, loading };
+
   const authData = {
     user,
     createAccount,
